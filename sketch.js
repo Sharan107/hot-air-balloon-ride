@@ -39,11 +39,30 @@ function draw() {
 
   textSize(20);
   stroke("white");
-  fill("white");
-  text("Use arrow keys to move the balloon",300,70);
+  fill("black");
+  text("Use arrow keys to move the balloon",100,20);
 
-  var balloonPosition=database.ref("balloon/height");
-  balloonPosition.on("value",readPosition,showError);
+var balloonposition=database.ref("balloon/position");
+balloonposition.on("value",readPosition,showError);
+
+updatePosition();
 
   drawSprites();
+}
+
+function readPosition(data){
+  height=data.val();
+  balloonSprite.x=height.x;
+  balloonSprite.y=height.y;
+}
+
+function showError(){
+  console.log("Error in writing to the database")
+}
+
+function updatePosition(){
+  database.ref("balloon/position").set({
+    'x':position.x+x,
+    'y':position.y+y
+  })
 }
