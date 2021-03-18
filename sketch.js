@@ -21,21 +21,31 @@ function setup() {
 function draw() {
   background(backgroundImg); 
   
+//  if(position!==undefined){
   if(keyDown(RIGHT_ARROW)){
     balloonSprite.x=balloonSprite.x+10;
+    balloonSprite.addAnimation("animation",balloonAnimation);
+    updatePosition(10,0);
   }
 
   if(keyDown(LEFT_ARROW)){
     balloonSprite.x=balloonSprite.x-10;
+    balloonSprite.addAnimation("animation",balloonAnimation);
+    updatePosition(-10,0);
    }
 
    if(keyDown(UP_ARROW)){
+     balloonSprite.scale=balloonSprite.scale-0.01;
      balloonSprite.y=balloonSprite.y-10;
+     updatePosition(0,-10);
    }
 
    if(keyDown(DOWN_ARROW)){
     balloonSprite.y=balloonSprite.y+10;
+    balloonSprite.scale=balloonSprite.scale+0.01;
+    updatePosition(0,10);
   }  
+//}
 
   textSize(20);
   stroke("white");
@@ -45,24 +55,24 @@ function draw() {
 var balloonposition=database.ref("balloon/position");
 balloonposition.on("value",readPosition,showError);
 
-updatePosition();
+
 
   drawSprites();
 }
 
 function readPosition(data){
-  height=data.val();
-  balloonSprite.x=height.x;
-  balloonSprite.y=height.y;
+  position=data.val();
+  balloonSprite.x=position.x;
+  balloonSprite.y=position.y;
 }
 
 function showError(){
   console.log("Error in writing to the database")
 }
 
-function updatePosition(){
+function updatePosition(x,y){
   database.ref("balloon/position").set({
-    'x':position.x+x,
-    'y':position.y+y
+   'x':position.x+x,
+   'y':position.y+y
   })
 }
