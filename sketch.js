@@ -10,10 +10,10 @@ function preload(){
 }
 
 function setup() {
+  
+  database= firebase.database();
   createCanvas(1200,600);
  
-  database=firebase.database();
-
   balloonSprite=createSprite(100,300,100,300);
   balloonSprite.addAnimation("animation",balloonAnimation);
 }
